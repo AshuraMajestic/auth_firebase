@@ -11,17 +11,16 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   sendSignInLinkToEmail,
-  isSignInWithEmailLink,
-  signInWithEmailLink,
 } from "firebase/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Modal from "./Modal";
 
 export default function SignInForm() {
+  const [showEmail, setShowEmail] = useState(false);
   const [user, setUser] = useAuthState(auth);
   const googleAuth = new GoogleAuthProvider();
   const router = useRouter();
+  const [email, setEmail] = useState("");
 
   const loginWithGoogle = async () => {
     const result = await signInWithPopup(auth, googleAuth);
@@ -31,10 +30,19 @@ export default function SignInForm() {
       router.push("/");
     }
   };
-  const loginWithMail = async () => {};
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
+  const actionCodeSetting = {
+    url: "http://localhost:3000/signinconfirm",
+    handleCodeInApp: true,
+  };
+  const signInWithMail = async () => {
+    sendSignInLinkToEmail(auth, email, actionCodeSetting)
+      .then(() => {
+        window.localStorage.setItem("emailForSignin", email);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     <section>
@@ -75,29 +83,38 @@ export default function SignInForm() {
                   </button>
                 </li>
                 <li>
-                  <button className="flex justify-center items-center p-3 border border-gray-200  text-base font-bold text-gray-900 rounded-lg   group hover:shadow  dark:text-white w-full">
-                    <Image
-                      src={mail}
-                      onClick={}
-                      alt="google"
-                      className="h-4 w-4 me-4"
-                    />
-                    <p className="whitespace-nowrap">Sign In With Email</p>
-                  </button>
+                  {showEmail ? (
+                    <>
+                      <input
+                        type="email"
+                        placeholder="Enter Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full mb-4 p-2 border rounded"
+                      />
+                      <button
+                        onClick={signInWithMail}
+                        className="flex justify-center items-center p-3 border border-gray-200 text-base font-bold text-gray-900 rounded-lg group hover:shadow dark:text-white w-full"
+                      >
+                        <Image src={mail} alt="mail" className="h-4 w-4 me-4" />
+                        <p className="whitespace-nowrap">Sign In With Email</p>
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      onClick={() => setShowEmail(true)}
+                      className="flex justify-center items-center p-3 border border-gray-200 text-base font-bold text-gray-900 rounded-lg group hover:shadow dark:text-white w-full"
+                    >
+                      <Image src={mail} alt="mail" className="h-4 w-4 me-4" />
+                      <p className="whitespace-nowrap">Sign In With Email</p>
+                    </button>
+                  )}
                 </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <Modal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        email={email}
-        setEmail={setEmail}
-        loginWithMail={loginWithMail}
-        loginError={loginError}
-      />
     </section>
   );
 }
