@@ -1,3 +1,5 @@
-export default function SigninPage() {
-  return <> Signin page</>;
+import SignInForm from "@/components/SignInForm";
+
+export default function SignInPage() {
+  return <SignInForm />;
 }

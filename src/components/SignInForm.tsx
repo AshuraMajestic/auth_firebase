@@ -1,0 +1,103 @@
+"use client";
+import Image from "next/image";
+import page from "../../public/design.jpg";
+import logo from "../../public/firebase.svg";
+import google from "../../public/google.svg";
+import mail from "../../public/gmail.svg";
+import Link from "next/link";
+import { auth } from "@/lib/firebaseConfig";
+import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
+} from "firebase/auth";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Modal from "./Modal";
+
+export default function SignInForm() {
+  const [user, setUser] = useAuthState(auth);
+  const googleAuth = new GoogleAuthProvider();
+  const router = useRouter();
+
+  const loginWithGoogle = async () => {
+    const result = await signInWithPopup(auth, googleAuth);
+    if (!result) {
+      console.log("Error");
+    } else {
+      router.push("/");
+    }
+  };
+  const loginWithMail = async () => {};
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  return (
+    <section>
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="relative flex items-end px-4 pb-10 pt-60 sm:px-6 sm:pb-16 md:justify-center lg:px-8 lg:pb-24">
+          <div className="absolute inset-0">
+            <Image
+              src={page}
+              className="h-screen w-full rounded-md object-cover object-top"
+              alt="background"
+            />
+          </div>
+          <div className="absolute inset-0 "></div>
+        </div>
+        <div>
+          <header className="flex flex-col items-center mt-4">
+            <Image src={logo} className="w-12 h-12 mb-2" alt="logo" />
+            <p className="text-white">
+              Journey to trillion miles start from here!
+            </p>
+          </header>
+          <div className="w-full h-full flex justify-center items-center">
+            <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700">
+              <h5 className=" mb-3 text-base font-semibold text-gray-900 md:text-xl dark:text-white text-center">
+                Sign In
+              </h5>
+              <p className="text-sm font-normal text-gray-500 dark:text-gray-400 text-center">
+                Choose a Sign In Method
+              </p>
+              <ul className="my-12 space-y-3">
+                <li>
+                  <button
+                    onClick={loginWithGoogle}
+                    className="flex justify-center items-center border border-gray-200  p-3 text-base font-bold text-gray-900 rounded-lg group hover:shadow  dark:text-white w-full"
+                  >
+                    <Image src={google} alt="google" className="h-4 w-4 me-4" />
+                    <p className="whitespace-nowrap">Sign In With Google</p>
+                  </button>
+                </li>
+                <li>
+                  <button className="flex justify-center items-center p-3 border border-gray-200  text-base font-bold text-gray-900 rounded-lg   group hover:shadow  dark:text-white w-full">
+                    <Image
+                      src={mail}
+                      onClick={}
+                      alt="google"
+                      className="h-4 w-4 me-4"
+                    />
+                    <p className="whitespace-nowrap">Sign In With Email</p>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <Modal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        email={email}
+        setEmail={setEmail}
+        loginWithMail={loginWithMail}
+        loginError={loginError}
+      />
+    </section>
+  );
+}
