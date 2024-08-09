@@ -49,10 +49,10 @@ export default function SlideShow() {
     slider!.scrollLeft = slider!.scrollLeft + 235;
   };
   return (
-    <div className="mt-4 mx-8">
+    <div className="mt-4 md:mx-8 mx-4">
       <header className="flex justify-between items-center">
         <p className="text-white font-bold text-2xl">Popular Topics 🔥</p>
-        <div className="flex space-x-5">
+        <div className="md:flex space-x-5 hidden">
           <button
             className="h-8 w-8 p-1 border shadow-lg rounded-md"
             onClick={slideLeft}
@@ -74,25 +74,25 @@ export default function SlideShow() {
         {filteredItems.map((item) => (
           <div
             key={item.id}
-            className="row-item mx-2 w-1/3 flex-shrink-0 border rounded-lg"
+            className="row-item mx-2 md:w-1/3 w-1/2 flex-shrink-0 border rounded-lg "
           >
-            <div className="flex flex-col w-full h-52">
-              <div className="flex flex-grow">
-                <div className="flex-none w-1/3 flex items-center justify-center ">
+            <div className="flex flex-col w-full md:h-52  h-58">
+              <div className="flex flex-grow md:flex-row flex-col">
+                <div className="flex-none md:w-1/3 w-full h-2/3 flex items-center justify-center ">
                   <Image
                     src={item.img}
                     alt={item.title}
                     className="max-w-full max-h-full"
                   />
                 </div>
-                <div className="flex-1 p-4">
-                  <h1 className="text-xl text-white font-bold mb-2">
+                <div className="md:flex-1 p-4 order-2 md:order-1">
+                  <h1 className="md:text-xl text-sm text-white font-bold mb-2">
                     {item.title}
                   </h1>
                   <p className="text-gray-700 text-xs">{item.description}</p>
                 </div>
               </div>
-              <div className="w-full mt-auto p-4">
+              <div className="w-full mt-auto p-4 md:block hidden">
                 <button className="w-full border-gray-50 border text-white py-2 px-4 rounded hover:bg-white hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500">
                   Read More
                 </button>

@@ -6,7 +6,7 @@ import google from "../../public/google.svg";
 import mail from "../../public/gmail.svg";
 import Link from "next/link";
 import { auth } from "@/lib/firebaseConfig";
-import { useAuthState } from "react-firebase-hooks/auth";
+
 import {
   signInWithPopup,
   GoogleAuthProvider,
@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 
 export default function SignInForm() {
   const [showEmail, setShowEmail] = useState(false);
-  const [user, setUser] = useAuthState(auth);
+
   const googleAuth = new GoogleAuthProvider();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -27,6 +27,7 @@ export default function SignInForm() {
     if (!result) {
       console.log("Error");
     } else {
+      window.localStorage.setItem("user", JSON.stringify(result.user));
       router.push("/");
     }
   };

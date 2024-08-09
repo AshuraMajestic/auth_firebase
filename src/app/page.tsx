@@ -8,21 +8,21 @@ import { useAuthState } from "react-firebase-hooks/auth";
 export default function Home() {
   const [user] = useAuthState(auth);
   const router = useRouter();
+
   if (!user) {
     router.push("/signin");
   }
   return (
     <>
-      {user ? (
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <div className="flex-grow p-6 mt-4 shadow-lg border-t">
-            <SlideShow />
-          </div>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <div className="flex-grow p-6 mt-4 shadow-lg border-t">
+          <SlideShow />
         </div>
-      ) : (
-        <></>
-      )}
+      </div>
+      {/* ) : ( */}
+      {/* <></> */}
+      {/* )} */}
     </>
   );
 }
