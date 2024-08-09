@@ -46,19 +46,18 @@ export default function SignInForm() {
 
   return (
     <section>
-      <div className="grid grid-cols-1 lg:grid-cols-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 md:z-0 z-0 relative">
         <div className="relative flex items-end px-4 pb-10 pt-60 sm:px-6 sm:pb-16 md:justify-center lg:px-8 lg:pb-24">
-          <div className="absolute inset-0">
+          <div className="absolute inset-0 h-1/2">
             <Image
               src={page}
-              className="h-screen w-full rounded-md object-cover object-top"
+              className="md:h-screen  w-full rounded-md object-cover object-top"
               alt="background"
             />
           </div>
-          <div className="absolute inset-0 "></div>
         </div>
         <div>
-          <header className="flex flex-col items-center mt-4">
+          <header className="flex flex-col items-center mt-4 md:z-0 z-10 relative">
             <Image src={logo} className="w-12 h-12 mb-2" alt="logo" />
             <p className="text-white">
               Journey to trillion miles start from here!
